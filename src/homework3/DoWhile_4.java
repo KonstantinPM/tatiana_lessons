@@ -5,20 +5,22 @@ public class DoWhile_4 {
         int i = 1;
         do {
             System.out.println(i);
-            ;
             i = i + 2;
         }
         while (i <= 100);
         System.out.println("________________");
         int n = 5;
-        int factorial = 0;
+        System.out.println("Factorial " + n + "=" + factorialDoWhile(n));
+    }
+
+    static int factorialDoWhile(int n) {
+        int factorial = 1;
         int j = 1;
         do {
-            factorial = j * n;
+            factorial = factorial * j;
             j++;
         }
-        while (j < n);
-        System.out.println("Factorial " + n + "=" + factorial);
-        ;
+        while (j <= n);
+        return factorial;
     }
 }

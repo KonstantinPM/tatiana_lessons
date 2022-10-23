@@ -9,12 +9,16 @@ public class CycleWhile_3 {
         }
         System.out.println("_____________");
         int n = 5;
-        int factorial = 0;
+        System.out.println("Factorial " + n + "=" + factorialWhile(n));
+    }
+
+    static int factorialWhile(int n) {
+        int factorial = 1;
         int j = 1;
-        while (j < n) {
-            factorial = j * n;
+        while (j <= n) {
+            factorial = j * factorial;
             j++;
         }
-        System.out.println("Factorial " + n + "=" + factorial);
+        return factorial;
     }
 }
