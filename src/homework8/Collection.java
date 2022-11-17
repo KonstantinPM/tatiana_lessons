@@ -1,5 +1,7 @@
 package homework8;
 
+import java.util.Iterator;
+
 public interface Collection {
     boolean delete(String o);
 
@@ -16,5 +18,7 @@ public interface Collection {
     int size();
 
     boolean equals(CollectionImpl collection);
+
+    Iterator<String> getIterator();
 
 }

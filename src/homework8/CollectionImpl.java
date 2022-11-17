@@ -1,10 +1,12 @@
 package homework8;
 
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 public class CollectionImpl implements Collection {
     private static final int INIT_SIZE = 16;
     private String[] array;
     private int size = 0;
-    private int lastIndex = 0;
 
     public CollectionImpl() {
         array = new String[INIT_SIZE];
@@ -78,7 +80,6 @@ public class CollectionImpl implements Collection {
     public boolean clear() {
         for (int i = 0; i < array.length; i++) {
             array[i] = null;
-            lastIndex = 0;
             size = 0;
         }
         return true;
@@ -112,4 +113,39 @@ public class CollectionImpl implements Collection {
         }
         return true;
     }
+
+    public Iterator<String> getIterator() {
+        return new CollectionIterator();
+    }
+
+    private class CollectionIterator implements Iterator<String> {
+
+        private int index = 0;
+        private int lastReturnedIndex = -1;
+
+        @Override
+        public boolean hasNext() {
+            return (index < size);
+        }
+
+        @Override
+        public String next() {
+            if (index >= size) {
+                throw new NoSuchElementException();
+            }
+            lastReturnedIndex = index;
+            return array[index++];
+        }
+
+        @Override
+        public void remove() {
+            if (lastReturnedIndex < 0) {
+                return;
+            }
+            System.arraycopy(array, lastReturnedIndex + 1, array, lastReturnedIndex, size - lastReturnedIndex - 1);
+            size--;
+            lastReturnedIndex = -1;
+        }
+    }
+
 }

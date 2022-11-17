@@ -1,5 +1,7 @@
 package homework8;
 
+import java.util.Iterator;
+
 public class CollectionRun {
     public static void main(String[] args) {
         CollectionImpl list = new CollectionImpl();
@@ -27,7 +29,13 @@ public class CollectionRun {
         System.out.println(list.size());
         System.out.println();
         System.out.println(list.get(2));
-        list.clear();
+        //list.clear();
         System.out.println(list);
+        Iterator<String> iterator =list.getIterator();
+        System.out.println("++++++++");
+        while (iterator.hasNext()){
+            System.out.println(iterator.next());
+        }
+        
     }
 }
