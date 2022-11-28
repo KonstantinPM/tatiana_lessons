@@ -2,7 +2,6 @@ package lesson13;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class CollectionOfIntegers {
     public static void main(String[] args) {

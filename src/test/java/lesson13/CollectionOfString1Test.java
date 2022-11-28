@@ -8,6 +8,7 @@ import java.util.List;
 import static lesson13.CollectionOfString1.filteredMapOutput;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class CollectionOfString1Test {
 
     @Test
