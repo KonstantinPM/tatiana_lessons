@@ -27,7 +27,7 @@ public class DigitRun {
     }
 
     public static boolean isNumeric(String string) {
-        int intValue;
+        long longValue;
 
         System.out.println(String.format("Parsing string: \"%s\"", string));
 
@@ -37,7 +37,7 @@ public class DigitRun {
         }
 
         try {
-            intValue = Integer.parseInt(string);
+            longValue = Long.parseLong(string);
             return true;
         } catch (NumberFormatException e) {
             System.out.println("Input only numbers without space and coma");
