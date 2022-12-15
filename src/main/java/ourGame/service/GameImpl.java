@@ -15,22 +15,21 @@ public class GameImpl implements Game {
 
     public void startGame(Player player, Computer computer) {
         String handOfComputer = String.valueOf(computer.getHand());
-        String handOfPlayer = (String) player.setHand();
-        System.out.println("Player choose: " + handOfPlayer);
+        System.out.println("Player choose: " + player.getHand());
         System.out.println("Computer choose: " + handOfComputer);
-        if (handOfPlayer.equals(handOfComputer)) {
+        if (player.getHand().equals(handOfComputer)) {
             System.out.println("Draw");
             showWinner(player, computer);
         }
-        if ((handOfPlayer.equals("Rock") && handOfComputer.equals("Paper"))
-                || (handOfPlayer.equals("Paper") && handOfComputer.equals("Scissors"))
-                || (handOfPlayer.equals("Scissors") && handOfComputer.equals("Rock"))) {
+        if ((player.getHand().equals("Rock") && handOfComputer.equals("Paper"))
+                || (player.getHand().equals("Paper") && handOfComputer.equals("Scissors"))
+                || (player.getHand().equals("Scissors") && handOfComputer.equals("Rock"))) {
             player.setPlayerScore(player.getPlayerScore() + 1);
             System.out.println("You've won");
             showWinner(player, computer);
-        } else if ((handOfPlayer.equals("Paper")) && (handOfComputer.equals("Rock"))
-                || (handOfPlayer.equals("Scissors")) && (handOfComputer.equals("Paper"))
-                || (handOfPlayer.equals("Rock")) && (handOfComputer.equals("Scissors"))) {
+        } else if ((player.getHand().equals("Paper")) && (handOfComputer.equals("Rock"))
+                || (player.getHand().equals("Scissors")) && (handOfComputer.equals("Paper"))
+                || (player.getHand().equals("Rock")) && (handOfComputer.equals("Scissors"))) {
             computer.setComputerScore(computer.getComputerScore()+1);
             player.setNumberOfLoseGames(player.getNumberOfLoseGames()+1);
             System.out.println("Computer has won");

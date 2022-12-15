@@ -1,7 +1,9 @@
 package ourGame.service;
 
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import ourGame.dto.Computer;
+import ourGame.dto.Hand;
 import ourGame.dto.Player;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -9,24 +11,31 @@ import static org.junit.jupiter.api.Assertions.*;
 class GameTest {
 
     @Test
-    void startGame() {
+    void playerShouldWin() {
         Player pl1 = new Player();
-        Computer c1 = new Computer();
-        Game game = new GameImpl();
-        assertNotNull(pl1);
-        assertNotNull(c1);
-        assertNotNull(game);
+        pl1.setHand("Rock");
         pl1.setName("Tanya");
-        assertEquals(pl1.getName(),"Tanya");
-        assertNotEquals(1, pl1.getNumberOfGames());
-        assertNotEquals(1,c1.getComputerScore());
+        Computer c1 = Mockito.mock(Computer.class);
+        Mockito.when(c1.getHand()).thenReturn(Hand.Paper);
+
+        new GameImpl().startGame(pl1, c1);
+
+        assertEquals(pl1.getPlayerScore(), 1);
+        assertEquals(pl1.getNumberOfLoseGames(), 0);
     }
 
     @Test
-    void showWinner() {
+    void computerShouldWin() {
         Player pl1 = new Player();
-        Computer c1 = new Computer();
-        assertEquals(0, pl1.getPlayerScore());
-        assertEquals(0, c1.getComputerScore());
+        pl1.setHand("Paper");
+        pl1.setName("Tanya");
+        Computer c1 = Mockito.mock(Computer.class);
+        Mockito.when(c1.getHand()).thenReturn(Hand.Rock);
+
+        new GameImpl().startGame(pl1, c1);
+
+        assertEquals(pl1.getPlayerScore(), 0);
+        assertEquals(pl1.getNumberOfLoseGames(), 1);
+        Mockito.verify(c1).setComputerScore(1);
     }
 }

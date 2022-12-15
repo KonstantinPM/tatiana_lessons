@@ -55,25 +55,4 @@ public class Player {
     }
 
 
-    public Object setHand() {
-        System.out.print("What do you choose: rock, scissors or paper? Or if you don't to play more, write Exit ");
-        Scanner sc = new Scanner(System.in);
-        String playerInput = sc.nextLine();
-        playerInput = playerInput.toUpperCase();
-        char firstLetter = playerInput.charAt(0);
-        if (firstLetter == 'R' || firstLetter == 'S' || firstLetter == 'P' || firstLetter == 'E') {
-            switch (firstLetter) {
-                case 'R':
-                    return "Rock";
-                case 'S':
-                    return "Scissors";
-                case 'P':
-                    return "Paper";
-                case 'E':
-                    System.exit(0);
-            }
-        }
-        return setHand();
-    }
-
 }
