@@ -5,14 +5,18 @@ import ourGame.dto.Player;
 import ourGame.service.Game;
 import ourGame.service.GameImpl;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class RunGame {
-    public static void main(String[] args) {
+
+    public static Player pl1 = new Player();
+    public static Computer c1 = new Computer();
+    public static void main(String[] args) throws IOException {
         String continueGame = "Y";
         int numberOfGames;
-        Player pl1 = new Player();
-        Computer c1 = new Computer();
         Game game = new GameImpl();
 
         System.out.println("Enter your name");

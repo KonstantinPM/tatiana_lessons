@@ -5,7 +5,7 @@ import ourGame.dto.Player;
 
 public interface Game {
 
-    void startGame(Player player, Computer computer);
+    Results startGame(Player player, Computer computer);
 
     void showWinner(Player player, Computer computer);
 }
