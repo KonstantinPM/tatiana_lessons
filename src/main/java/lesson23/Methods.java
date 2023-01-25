@@ -25,6 +25,13 @@ public class Methods {
         connection.close();
     }
 
+    public static void deleteStudent(Student st1) throws SQLException {
+        MysqlDataSource dataSource = getDataSource();
+        java.sql.Connection connection = dataSource.getConnection();
+        Statement statement = connection.createStatement();
+        statement.execute("delete from students where  (name_surname) = ('" + st1.getName() + "')");
+        connection.close();
+    }
     public static MysqlDataSource getDataSource() throws SQLException {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setUseSSL(false);
