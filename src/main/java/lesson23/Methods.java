@@ -62,9 +62,7 @@ public class Methods {
 
 
     public static List<Student> getByName(String name) throws SQLException {
-        MysqlDataSource dataSource = getDataSource();
-        java.sql.Connection connection = dataSource.getConnection();
-        Statement statement = connection.createStatement();
+        Statement statement = getStatement();
         List<Student> student = new ArrayList<>();
         String query = "select * from students where name_surname = " + "'" + name + "'";
         System.out.println("Query: " + query);
@@ -80,9 +78,7 @@ public class Methods {
     }
 
     public static List<Student> getById(int id) throws SQLException {
-        MysqlDataSource dataSource = getDataSource();
-        java.sql.Connection connection = dataSource.getConnection();
-        Statement statement = connection.createStatement();
+        Statement statement = getStatement();
         List<Student> student = new ArrayList<>();
         String query = "select * from students where id_student = " + "'" + id + "'";
         System.out.println("Query: " + query);
