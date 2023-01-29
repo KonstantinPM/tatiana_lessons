@@ -19,11 +19,11 @@ public class RunGame {
         int numberOfGames;
         Game game = new GameImpl();
 
-        System.out.println("Enter your name");
+        //System.out.println("Enter your name");
         logger.info("Enter your name");
         Scanner sc = new Scanner(System.in);
         pl1.setName(sc.nextLine());
-        System.out.println("Enter number of games");
+        //System.out.println("Enter number of games");
         logger.info("Enter number of games");
         numberOfGames = sc.nextInt();
 

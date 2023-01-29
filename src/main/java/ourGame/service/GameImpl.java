@@ -15,11 +15,11 @@ public class GameImpl implements Game {
     public void showWinner(Player player, Computer computer) {
         int pScore = player.getPlayerScore();
         int cScore = computer.getComputerScore();
-        System.out.println("Scores after games");
+        //System.out.println("Scores after games");
         logger.info("Scores after games");
-        System.out.println("Player score " + pScore);
+        //System.out.println("Player score " + pScore);
         logger.info("Player score " + pScore);
-        System.out.println("Computer score " + cScore);
+        //System.out.println("Computer score " + cScore);
         logger.info("Computer score " + cScore);
     }
 
