@@ -1,5 +1,7 @@
 package ourGame.service;
 
+import org.junit.platform.commons.logging.LoggerFactory;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import static ourGame.service.GameImpl.handOfComputer;
 import static ourGame.service.GameImpl.rez;
 
 public class Logger {
+
 
     public static void logger () {
 

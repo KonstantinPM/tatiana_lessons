@@ -3,6 +3,10 @@ package ourGame.service;
 import ourGame.dto.Computer;
 import ourGame.dto.Player;
 
+import static ourGame.RunGame.logger;
+
+//import java.util.logging.Logger;
+
 
 public class GameImpl implements Game {
     public static Results rez;
@@ -12,8 +16,11 @@ public class GameImpl implements Game {
         int pScore = player.getPlayerScore();
         int cScore = computer.getComputerScore();
         System.out.println("Scores after games");
+        logger.info("Scores after games");
         System.out.println("Player score " + pScore);
+        logger.info("Player score " + pScore);
         System.out.println("Computer score " + cScore);
+        logger.info("Computer score " + cScore);
     }
 
     public Results startGame(Player player, Computer computer) {
@@ -39,7 +46,7 @@ public class GameImpl implements Game {
             showWinner(player, computer);
         }
         player.setNumberOfGames(player.getNumberOfGames() + 1);
-        Logger.logger();
+        //Logger.logger();
         return rez;
     }
 

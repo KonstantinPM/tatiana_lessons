@@ -1,17 +1,17 @@
 package ourGame;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ourGame.dto.Computer;
 import ourGame.dto.Player;
 import ourGame.service.Game;
 import ourGame.service.GameImpl;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 
 public class RunGame {
-
+    public static final Logger logger = LoggerFactory.getLogger("logger".getClass());
     public static Player pl1 = new Player();
     public static Computer c1 = new Computer();
     public static void main(String[] args) throws IOException {
@@ -20,9 +20,11 @@ public class RunGame {
         Game game = new GameImpl();
 
         System.out.println("Enter your name");
+        logger.info("Enter your name");
         Scanner sc = new Scanner(System.in);
         pl1.setName(sc.nextLine());
         System.out.println("Enter number of games");
+        logger.info("Enter number of games");
         numberOfGames = sc.nextInt();
 
        while (!continueGame.equalsIgnoreCase("N")) {
