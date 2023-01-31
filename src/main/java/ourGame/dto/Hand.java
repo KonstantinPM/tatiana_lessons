@@ -1,9 +1,11 @@
 package ourGame.dto;
 
+import static ourGame.RunGame.resourceBundle;
+
 public enum Hand {
-    Rock("Rock"),
-    Paper("Paper"),
-    Scissors("Scissors");
+    Rock(resourceBundle.getString("Rock")),
+    Paper(resourceBundle.getString("Paper")),
+    Scissors(resourceBundle.getString("Scissors"));
 
     private final String name;
 

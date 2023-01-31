@@ -4,6 +4,7 @@ import ourGame.dto.Computer;
 import ourGame.dto.Player;
 
 import static ourGame.RunGame.logger;
+import static ourGame.RunGame.resourceBundle;
 
 //import java.util.logging.Logger;
 
@@ -15,34 +16,31 @@ public class GameImpl implements Game {
     public void showWinner(Player player, Computer computer) {
         int pScore = player.getPlayerScore();
         int cScore = computer.getComputerScore();
-        //System.out.println("Scores after games");
-        logger.info("Scores after games");
-        //System.out.println("Player score " + pScore);
-        logger.info("Player score " + pScore);
-        //System.out.println("Computer score " + cScore);
-        logger.info("Computer score " + cScore);
+        logger.info(resourceBundle.getString("score"));
+        logger.info(resourceBundle.getString("pl_score")+pScore);
+        logger.info(resourceBundle.getString("c_score")+cScore);
     }
 
     public Results startGame(Player player, Computer computer) {
         handOfComputer = String.valueOf(computer.getHand());
-        System.out.println("Player choose: " + player.getHand());
-        System.out.println("Computer choose: " + handOfComputer);
+        logger.info(resourceBundle.getString("pl_choose")+player.getHand());
+        logger.info(resourceBundle.getString("c_choose" )+handOfComputer);
         if (player.getHand().equals(handOfComputer)) {
-            System.out.println(rez = Results.DRAW);
+            System.out.println(resourceBundle.getString(String.valueOf(rez = Results.DRAW)));
             showWinner(player, computer);
         }
-        if ((player.getHand().equals("Rock") && handOfComputer.equals("Paper"))
-                || (player.getHand().equals("Paper") && handOfComputer.equals("Scissors"))
-                || (player.getHand().equals("Scissors") && handOfComputer.equals("Rock"))) {
+        if ((player.getHand().equals(resourceBundle.getString("Rock")) && handOfComputer.equals(resourceBundle.getString("Paper")))
+                || (player.getHand().equals(resourceBundle.getString("Paper")) && handOfComputer.equals(resourceBundle.getString("Scissors")))
+                || (player.getHand().equals(resourceBundle.getString("Scissors")) && handOfComputer.equals(resourceBundle.getString("Rock")))) {
             player.setPlayerScore(player.getPlayerScore() + 1);
-            System.out.println(rez = Results.WIN);
+            System.out.println(resourceBundle.getString(String.valueOf(rez = Results.LOSE)));
             showWinner(player, computer);
-        } else if ((player.getHand().equals("Paper")) && (handOfComputer.equals("Rock"))
-                || (player.getHand().equals("Scissors")) && (handOfComputer.equals("Paper"))
-                || (player.getHand().equals("Rock")) && (handOfComputer.equals("Scissors"))) {
+        } else if ((player.getHand().equals(resourceBundle.getString("Paper"))) && (handOfComputer.equals(resourceBundle.getString("Rock")))
+                || (player.getHand().equals(resourceBundle.getString("Scissors"))) && (handOfComputer.equals(resourceBundle.getString("Paper")))
+                || (player.getHand().equals(resourceBundle.getString("Rock"))) && (handOfComputer.equals(resourceBundle.getString("Scissors")))) {
             computer.setComputerScore(computer.getComputerScore()+1);
             player.setNumberOfLoseGames(player.getNumberOfLoseGames()+1);
-            System.out.println(rez = Results.LOSE);
+            System.out.println(resourceBundle.getString(String.valueOf(rez = Results.WIN)));
             showWinner(player, computer);
         }
         player.setNumberOfGames(player.getNumberOfGames() + 1);

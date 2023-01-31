@@ -8,42 +8,57 @@ import ourGame.service.Game;
 import ourGame.service.GameImpl;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.Scanner;
+import java.nio.charset.Charset;
 
 public class RunGame {
     public static final Logger logger = LoggerFactory.getLogger("logger".getClass());
     public static Player pl1 = new Player();
     public static Computer c1 = new Computer();
+    public static ResourceBundle resourceBundle;
+
     public static void main(String[] args) throws IOException {
+        Locale defLocale = Locale.getDefault();
+        if (args.length != 0) {
+            defLocale = new Locale(args[0]);
+        }
+        resourceBundle = ResourceBundle.getBundle("Message", defLocale);
+
         String continueGame = "Y";
         int numberOfGames;
         Game game = new GameImpl();
 
-        //System.out.println("Enter your name");
-        logger.info("Enter your name");
+        logger.info(resourceBundle.getString("enter_name"));
+        //System.out.println((resourceBundle.getString("enter_name")));
         Scanner sc = new Scanner(System.in);
         pl1.setName(sc.nextLine());
-        //System.out.println("Enter number of games");
-        logger.info("Enter number of games");
+        logger.info(resourceBundle.getString("enter_numberOfGames"));
         numberOfGames = sc.nextInt();
 
-       while (!continueGame.equalsIgnoreCase("N")) {
+        while ((!continueGame.equalsIgnoreCase(resourceBundle.getString("N")))) {
 
             if (numberOfGames > 0) {
                 pl1.setHand(playerHand());
                 game.startGame(pl1, c1);
-                System.out.println("You have " + --numberOfGames + " games left to play");
+                logger.info(resourceBundle.getString("enter_you_have") + (--numberOfGames));
+                //System.out.print(--numberOfGames);
                 System.out.println();
             } else {
-                System.out.println("You played " + pl1.getNumberOfGames() + " games.");
-                System.out.println("You lost: " + pl1.getNumberOfLoseGames() + " games");
-                System.out.println("You won: " + pl1.getPlayerScore() + " games");
+                logger.info(resourceBundle.getString("you_played") + pl1.getNumberOfGames());
+                //System.out.println(pl1.getNumberOfGames());
+                logger.info(resourceBundle.getString("lost_games") + pl1.getNumberOfLoseGames());
+                //System.out.println(pl1.getNumberOfLoseGames());
+                logger.info(resourceBundle.getString("win_games") + pl1.getPlayerScore());
+                //System.out.println(pl1.getPlayerScore());
                 System.out.println();
-                System.err.println("Your games overed. Do you want to continue?[Y/N]");
+                logger.info(resourceBundle.getString("games_overed"));
                 continueGame = sc.next();
 
-                if (continueGame.equalsIgnoreCase("y")) {
-                    System.out.println("Enter number of games");
+                if (continueGame.equalsIgnoreCase("y") || continueGame.equalsIgnoreCase("д")) {
+                    logger.info(resourceBundle.getString("enter_numberOfGames"));
                     numberOfGames = sc.nextInt();
                 }
             }
@@ -53,20 +68,25 @@ public class RunGame {
     }
 
     public static String playerHand() {
-        System.out.print("What do you choose: rock, scissors or paper? Or if you don't to play more, write Exit ");
+        logger.info(resourceBundle.getString("choose"));
         Scanner sc = new Scanner(System.in);
         String playerInput = sc.nextLine();
         playerInput = playerInput.toUpperCase();
         char firstLetter = playerInput.charAt(0);
-        if (firstLetter == 'R' || firstLetter == 'S' || firstLetter == 'P' || firstLetter == 'E') {
+        if (firstLetter == 'R' || firstLetter == 'S' || firstLetter == 'P' || firstLetter == 'E' ||
+                firstLetter == 'К' || firstLetter == 'Н' || firstLetter == 'Б' || firstLetter == 'В') {
             switch (firstLetter) {
                 case 'R':
-                    return "Rock";
+                case 'К':
+                    return resourceBundle.getString("Rock");
                 case 'S':
-                    return "Scissors";
+                case 'Н':
+                    return resourceBundle.getString("Scissors");
                 case 'P':
-                    return "Paper";
+                case 'Б':
+                    return resourceBundle.getString("Paper");
                 case 'E':
+                case 'В':
                     System.exit(0);
             }
         }
