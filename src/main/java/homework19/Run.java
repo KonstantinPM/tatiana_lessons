@@ -28,7 +28,6 @@ public class Run {
             String linkToFile = args[0].trim();
             path = Path.of(linkToFile);
         }
-
         if (Files.isDirectory(path) || (Files.isRegularFile(path))) {
             System.out.println("Supported files: " + fs.supportedFiles(path));
 

@@ -36,7 +36,6 @@ public class FileServiceImpl implements FileService {
         }
         return supportedFilesList;
     }
-
     @Override
     public String readFromFile(Path path) {
         StringBuilder contentBuilder = new StringBuilder();

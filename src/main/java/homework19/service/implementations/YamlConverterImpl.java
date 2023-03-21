@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import homework19.service.interfaces.Converter;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
-import java.util.Map;
 
+import java.util.Map;
 
 public class YamlConverterImpl implements Converter {
     @Override
