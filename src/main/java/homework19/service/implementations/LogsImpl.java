@@ -1,7 +1,6 @@
 package homework19.service.implementations;
 
 import homework19.service.interfaces.Logs;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;

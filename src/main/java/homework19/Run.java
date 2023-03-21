@@ -29,7 +29,7 @@ public class Run {
             path = Path.of(linkToFile);
         }
 
-        if (Files.isDirectory(path)||(Files.isRegularFile(path))) {
+        if (Files.isDirectory(path) || (Files.isRegularFile(path))) {
             System.out.println("Supported files: " + fs.supportedFiles(path));
 
             for (Path p : supportedFilesList) {
