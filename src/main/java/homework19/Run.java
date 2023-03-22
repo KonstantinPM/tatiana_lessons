@@ -11,7 +11,6 @@ import homework19.service.interfaces.Logs;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-
 import static homework19.service.implementations.FileServiceImpl.supportedFilesList;
 
 public class Run {
