@@ -1,7 +1,6 @@
-package task5;
+package task7;
 
 
-import task7.MyUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.provider.Arguments;
@@ -13,7 +12,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class Task5Test {
+public class Task7Test {
 
     final private static String PACKAGE = "task7";
 
