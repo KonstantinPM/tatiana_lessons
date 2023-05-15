@@ -1,225 +1,279 @@
 package task5;
 
-import org.junit.jupiter.api.Assertions;
+
+import task5.MyUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class Task5Test {
+public class Task5Test {
 
-	final private static String PLANT = "task5.Plant";
-	final private static String COLOR_ENUM = "task5.Color";
-	final private static String TYPE_ENUM = "task5.Type";
-	final private static String COLOR_EXCEPTION = "task5.ColorException";
-	final private static String TYPE_EXCEPTION = "task5.TypeException";
+    final private static String PACKAGE = "task5";
 
-	@DisplayName("Check that a class is present")
-	@ParameterizedTest
-	@MethodSource("provideClass")
-	void isTypeClass() {
-		try {
-			Assertions.assertNotNull(Class.forName(PLANT));
-			assertEquals("Plant", Class.forName(PLANT).getSimpleName());
-		} catch (ClassNotFoundException e) {
-			fail("There is no Plant class");
-		}
-	}
+//    @DisplayName("Check that Classes is present")
+//    @ParameterizedTest
+//    @MethodSource("listOfClasses")
+//    void isTypePresent(String cl) {
+//        try {
+//            assertNotNull(Class.forName(PACKAGE + cl));
+//            assertEquals(cl, Class.forName(PACKAGE + cl).getSimpleName());
+//        } catch (ClassNotFoundException e) {
+//            fail("There is no class " + cl);
+//        }
+//    }
 
-	private static Stream<Arguments> provideClass() {
-		return Stream.of(Arguments.of(PLANT), Arguments.of(TYPE_EXCEPTION), Arguments.of(COLOR_EXCEPTION));
-	}
+    private static Stream<Arguments> listOfClasses() {
+        return Stream.of(Arguments.of("MyUtils"));
+    }
 
-	@DisplayName("Check that a class extends Exception class")
-	@ParameterizedTest
-	@MethodSource("provideExceptionClass")
-	void extendsTypeClass(String className) {
-		try {
-			Class<?> parentClazz = Class.forName("java.lang.Exception");
-			Class<?> childClazz = Class.forName(className);
-			assertTrue(parentClazz.isAssignableFrom(childClazz));
-		} catch (ClassNotFoundException e) {
-			fail("There is no such class");
-		}
-	}
+    @DisplayName("Check that class contain method")
+    @Test
+    void isMethodPresent() {
+        String cl = "MyUtils";
+        String m = "nameList";
+        Method[] methods = null;
+        try {
+            methods = Class.forName(PACKAGE + cl).getDeclaredMethods();
+            boolean isMethod = false;
+            for (Method method : methods) {
+                if (method.getName().equals(m)) {
+                    isMethod = true;
+                    break;
+                }
+            }
+            assertTrue(isMethod, "Class do not have method " + m);
+        } catch (ClassNotFoundException e) {
+            fail("There is no class " + cl);
+        }
+    }
 
-	private static Stream<Arguments> provideExceptionClass() {
-		return Stream.of(Arguments.of(TYPE_EXCEPTION), Arguments.of(COLOR_EXCEPTION));
-	}
+    @DisplayName("Check if list have one participant")
+    @Test
+    void checkOneParticipant() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of("Ivan"));
+        final List<String> expected = Arrays.asList("Ivan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with one participant" + e);
+        }
+    }
 
-	@DisplayName("Check that enum is present")
-	@ParameterizedTest
-	@MethodSource("provideEnum")
-	public void isTypeEnum(String enumName) {
-		try {
-			Class<?> clazz = Class.forName(enumName);
-			assertTrue(clazz.isEnum());
-		} catch (ClassNotFoundException e) {
-			fail("There is no " + enumName + " enum");
-		}
-	}
+    @DisplayName("Check if list have duplicate participants")
+    @Test
+    void checkDuplicateParticipants() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"Ivan", "Ivan", "Ira"}));
+        final List<String> expected = Arrays.asList("Ira", "Ivan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with duplicate participants" + e);
+        }
+    }
 
-	private static Stream<Arguments> provideEnum() {
-		return Stream.of(Arguments.of(COLOR_ENUM), Arguments.of(TYPE_ENUM));
-	}
+    @DisplayName("Check if list have case sensitivity")
+    @Test
+    void checkCaseSensitivity() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"iVan", "PeTRo ", "Petro", "Ivan"}));
+        final List<String> expected = Arrays.asList("Ivan", "Petro");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with case sensitivity" + e);
+        }
+    }
 
-	@DisplayName("Check that a field is present")
-	@ParameterizedTest
-	@MethodSource("provideField")
-	public void hasTypeDeclaredField(String name, String fieldName) {
-		try {
-			Class<?> clazz = Class.forName(name);
-			Field[] fields = clazz.getDeclaredFields();
-			boolean isField = false;
-			for (Field field : fields) {
-				if (fieldName.equals(field.getName())) {
-					isField = true;
-				}
-			}
-			assertTrue(isField);
-		} catch (ClassNotFoundException e) {
-			fail("There is no " + name + " enum");
-		}
-	}
+    @DisplayName("Check if list extra spaces")
+    @Test
+    void checkExtraSpaces() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{" i v  a n", "  Pet  ro  "}));
+        final List<String> expected = Arrays.asList("Ivan", "Petro");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with extra spaces" + e);
+        }
+    }
 
-	private static Stream<Arguments> provideField() {
-		return Stream.of(Arguments.of(COLOR_ENUM, "WHITE"), Arguments.of(COLOR_ENUM, "RED"),
-				Arguments.of(COLOR_ENUM, "BLUE"), Arguments.of(TYPE_ENUM, "RARE"), Arguments.of(TYPE_ENUM, "ORDINARY"),
-				Arguments.of(PLANT, "name"), Arguments.of(PLANT, "color"), Arguments.of(PLANT, "type"));
-	}
+    @DisplayName("Check if list have unique participants")
+    @Test
+    void checkUniqueParticipants() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"ivan", "Petro"}));
+        origin.put("Web", Stream.of(new String[]{"Stepan", "ira"}));
+        origin.put("Spring", Stream.of(new String[]{"Andriy", "Anna"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with unique participants" + e);
+        }
+    }
 
-	@DisplayName("Check that a class has a constructor")
-	@ParameterizedTest
-	@MethodSource("provideConstructor")
-	public void hasTypeDeclaredConstructor(String className, Class<?>[] params) {
+    @DisplayName("Check if list have one streams")
+    @Test
+    void checkOneStreams() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{" ivan", "Petro ", " Ira "}));
+        final List<String> expected = Arrays.asList("Ira", "Ivan", "Petro");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with one streams" + e);
+        }
+    }
 
-		try {
-			Class<?> clazz = Class.forName(className);
-			Constructor<?>[] constructors = clazz.getDeclaredConstructors();
-			for (Constructor<?> constructor : constructors) {
-				Class<?>[] types = constructor.getParameterTypes();
-				assertTrue(Arrays.equals(types, params));
-			}
-		} catch (ClassNotFoundException e) {
-			fail("There is no such class");
-		}
-	}
+    @DisplayName("Check if list have two streams")
+    @Test
+    void checkTwoStreams() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"ivan", "Petro", " Ira"}));
+        origin.put("Web", Stream.of(new String[]{"Stepan", "ira ", "Andriy ", "anna"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with two streams" + e);
+        }
+    }
 
-	private static Stream<Arguments> provideConstructor() {
-		return Stream.of(Arguments.of(COLOR_EXCEPTION, new Class[] { String.class }),
-				Arguments.of(TYPE_EXCEPTION, new Class[] { String.class }),
-				Arguments.of(PLANT, new Class[] { String.class, String.class, String.class }));
-	}
+    @DisplayName("Check if list have three streams")
+    @Test
+    void checkThreeStreams() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{" ivan", "Petro ", " Ira ", "", null}));
+        origin.put("Web", Stream.of(new String[]{"Stepan", "ira ", " Andriy ", "anna"}));
+        origin.put("Spring", Stream.of(new String[]{"Ivan", "Anna"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with three streams" + e);
+        }
+    }
 
-	@DisplayName("Check that a class has a properly type of fields")
-	@ParameterizedTest
-	@MethodSource("provideFieldType")
-	void checkFieldType(String classType, String fieldName, Class<?> fieldType) {
-		try {
-			Class<?> clazz = Class.forName(classType);
+    @DisplayName("Check if list have sorted streams")
+    @Test
+    void checkSortedStreams() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"Stepan", "Petro", "Ivan", "Ira", "Anna", "Andriy"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct with sorted streams" + e);
+        }
+    }
 
-			Field[] declaredFields = clazz.getDeclaredFields();
-			boolean isField = false;
-			for (Field field : declaredFields) {
-				if (fieldName.equals(field.getName())) {
-					assertEquals(field.getType(), fieldType);
-					isField = true;
-				}
-			}
-			assertTrue(isField);
-		} catch (ClassNotFoundException e) {
-			fail("There is no such class");
-		}
+    @DisplayName("Check if empty string present in list")
+    @Test
+    void checkEmptyStringPresent() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{" ivan", "Petro ", " Ira ", ""}));
+        origin.put("Web", Stream.of(new String[]{"Stepan", "", "ira ", " Andriy ", "anna"}));
+        origin.put("Spring", Stream.of(new String[]{"Ivan", "", "Anna"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct if empty string present in list" + e);
+        }
+    }
 
-	}
+    @DisplayName("Check if list have empty string only")
+    @Test
+    void checkEmptyStringOnly() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{"", " ", "  ", ""}));
+        final List<String> expected = new ArrayList<String>();
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct if list have empty string only" + e);
+        }
+    }
 
-	private static Stream<Arguments> provideFieldType() {
-		return Stream.of(Arguments.of(PLANT, "name", String.class), Arguments.of(PLANT, "color", COLOR_ENUM),
-				Arguments.of(PLANT, "type", TYPE_ENUM));
-	}
+    @DisplayName("Check if list have null participant")
+    @Test
+    void checkNullParticipantPresent() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[]{" ivan", null, "Petro ", " Ira ", null}));
+        origin.put("Web", Stream.of(new String[]{"Stepan", "ira ", null, " Andriy ", "anna"}));
+        origin.put("Spring", Stream.of(new String[]{"Ivan", null, "Anna"}));
+        final List<String> expected = Arrays.asList("Andriy", "Anna", "Ira", "Ivan", "Petro", "Stepan");
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct if list have null participant" + e);
+        }
+    }
 
-	@DisplayName("Check that 'toString' method is overriden in class Plant")
-	@Test
-	void overridesTypeMethod() {
-		try {
-			Class<?> parentClass = Class.forName("java.lang.Object");
-			Class<?> childClass = Class.forName(PLANT);
-			Method childMethod = childClass.getDeclaredMethod("toString");
-			Method parentMethod = parentClass.getDeclaredMethod("toString");
-			assertTrue(equalParamTypes(parentMethod.getParameterTypes(), childMethod.getParameterTypes()));
-		} catch (ClassNotFoundException e) {
-			fail("There is no such class");
-		} catch (NoSuchMethodException e) {
-			fail("There is no such method");
-		}
-	}
+    @DisplayName("Check if list have null participant only")
+    @Test
+    void checkNullParticipantOnly() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", Stream.of(new String[3]));
+        final List<String> expected = new ArrayList<String>();
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct if list have null participant only" + e);
+        }
+    }
 
-	private static boolean equalParamTypes(final Class<?>[] params1, final Class<?>[] params2) {
-		if (params1.length == params2.length) {
-			for (int i = 0; i < params1.length; ++i) {
-				if (params1[i] != params2[i]) {
-					return false;
-				}
-			}
-			return true;
-		}
-		return false;
-	}
+    @DisplayName("Check if list have null stream")
+    @Test
+    void checkNullStream() {
+        final Map<String, Stream<String>> origin = new HashMap<String, Stream<String>>();
+        origin.put("Desktop", null);
+        final List<String> expected = new ArrayList<String>();
+        List<String> actual = null;
+        try {
+            actual = (List<String>) new MyUtils().nameList((Map) origin).collect(Collectors.toList());
+            assertTrue(actual != null && expected.equals(actual));
+        } catch (Exception e) {
+            fail("Do not work correct if list have null stream" + e);
+        }
+    }
 
-	@DisplayName("Check creating a plant with valid fields")
-	@Test
-	void createsObjectConstructor() {
-		try {
-			for (final Color color : Color.values()) {
-				final Type[] values2 = Type.values();
-				for (int length2 = values2.length, j = 0; j < length2; ++j) {
-					assertNotNull(new Plant(values2[j].toString(), color.toString(), "MyPlant"));
-				}
-			}
-		} catch (TypeException | ColorException ex) {
-			fail("Plant object is not created");
-		}
-	}
-
-	@DisplayName("Check that exception is thrown when creating a plant with invalid color or type")
-	@ParameterizedTest
-	@MethodSource("provideEceptionData")
-	void generatesConstructorColorException(Class exceptionClass, String name, String color, String type,
-			String message) {
-
-		assertThrows(exceptionClass, () -> {
-			new Plant(type, color, name);
-		}, message);
-
-	}
-
-	private static Stream<Arguments> provideEceptionData() {
-		return Stream.of(
-				Arguments.of(TYPE_EXCEPTION, "someType", "blue", "NewType", "Plant with such type is not created"),
-				Arguments.of(COLOR_EXCEPTION, "someType", "NewColor", "rare", "Plant with such color is not created"));
-	}
-
-	@DisplayName("Check creating of a plant with valid fields")
-	@Test
-	void toStringTest() {
-
-		final String s = "MyPlant";
-		final String s2 = "White";
-		final String s3 = "Ordinary";
-		try {
-			assertEquals(new Plant(s3, s2, s).toString(), String.format("{type: %s, color: %s, name: %s}",
-					Type.ORDINARY.toString(), Color.WHITE.toString(), s));
-		} catch (Exception ex) {
-			fail("Plant with valid field is not created");
-		}
-	}
 }
+
