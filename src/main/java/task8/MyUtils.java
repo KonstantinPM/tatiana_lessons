@@ -1,4 +1,4 @@
-package task6;
+package task8;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +24,6 @@ public class MyUtils {
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().stream().sorted()));
     }
-
     private static String getNetworkCode(String phoneNumber) {
         if (phoneNumber.length() >= 3) {
             return phoneNumber.substring(0, 3);

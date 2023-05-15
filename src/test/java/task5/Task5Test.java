@@ -1,12 +1,10 @@
 package task5;
 
 
-import task5.MyUtils;
+import task7.MyUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -17,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Task5Test {
 
-    final private static String PACKAGE = "task5";
+    final private static String PACKAGE = "task7";
 
 //    @DisplayName("Check that Classes is present")
 //    @ParameterizedTest

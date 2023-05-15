@@ -1,6 +1,6 @@
 package task6;
 
-import task6.MyUtils;
+import task8.MyUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.lang.reflect.Method;
 import java.util.*;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Task6Test {
 
-    final private static String PACKAGE = "task6";
+    final private static String PACKAGE = "task8";
 
     private static Stream<Arguments> listOfClasses() {
         return Stream.of(Arguments.of("MyUtils"));
