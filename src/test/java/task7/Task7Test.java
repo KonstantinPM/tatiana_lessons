@@ -1,32 +1,45 @@
 package task7;
 
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.provider.Arguments;
-
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class Task7Test {
 
-    final private static String PACKAGE = "task7";
 
-//    @DisplayName("Check that Classes is present")
-//    @ParameterizedTest
-//    @MethodSource("listOfClasses")
-//    void isTypePresent(String cl) {
-//        try {
-//            assertNotNull(Class.forName(PACKAGE + cl));
-//            assertEquals(cl, Class.forName(PACKAGE + cl).getSimpleName());
-//        } catch (ClassNotFoundException e) {
-//            fail("There is no class " + cl);
-//        }
-//    }
+    /**
+     * точка в конце
+     */
+    final private static String PACKAGE = "task7.";
+
+    @DisplayName("Check that Classes is present")
+    @ParameterizedTest
+    @MethodSource("listOfClasses")
+    void isTypePresent(String cl) {
+        try {
+            assertNotNull(Class.forName(PACKAGE + cl));
+            assertEquals(cl, Class.forName(PACKAGE + cl).getSimpleName());
+        } catch (ClassNotFoundException e) {
+            fail("There is no class " + cl);
+        }
+    }
 
     private static Stream<Arguments> listOfClasses() {
         return Stream.of(Arguments.of("MyUtils"));
