@@ -15,7 +15,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class Task8Test {
 
-    final private static String PACKAGE = "task8";
+    /**
+     * точка в конце
+     */
+    final private static String PACKAGE = "task8.";
 
     private static Stream<Arguments> listOfClasses() {
         return Stream.of(Arguments.of("MyUtils"));
