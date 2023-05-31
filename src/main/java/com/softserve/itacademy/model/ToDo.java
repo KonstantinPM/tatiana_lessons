@@ -1,16 +1,76 @@
 package com.softserve.itacademy.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import javax.validation.constraints.Size;
+import java.security.Timestamp;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 
+@Entity
+@Table(name = "todos")
 public class ToDo {
-//TODO
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotBlank
+    @Size(max = 255)
+    private String title;
+
+    @NotNull
+    @Column(name = "owner_id")
+    private Long ownerId;
+
+    @NotNull
+    @Column(name = "created_at")
+    private LocalDate createdAt;
+
+    @OneToMany
+    @JoinColumn(name = "todo_id")
+    private List<ToDoCollaborator> collaborators;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getOwnerId() {
+        return ownerId;
+    }
+
+    public void setOwnerId(Long ownerId) {
+        this.ownerId = ownerId;
+    }
+
+    public LocalDate getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDate createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public List<ToDoCollaborator> getCollaborators() {
+        return collaborators;
+    }
+
+    public void setCollaborators(List<ToDoCollaborator> collaborators) {
+        this.collaborators = collaborators;
+    }
 }
+
