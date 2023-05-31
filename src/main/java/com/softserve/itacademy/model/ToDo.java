@@ -29,9 +29,17 @@ public class ToDo {
     @Column(name = "created_at")
     private LocalDate createdAt;
 
-    @OneToMany
-    @JoinColumn(name = "todo_id")
-    private List<ToDoCollaborator> collaborators;
+//    @OneToMany
+//    @JoinColumn(name = "todo_id")
+//    private List<ToDoCollaborator> collaborators;
+
+    @ManyToOne
+    @JoinColumn(name = "owner_id")
+    private User owner;
+
+    public void setOwner(User owner) {
+        this.owner = owner;
+    }
 
     public Long getId() {
         return id;
@@ -65,12 +73,5 @@ public class ToDo {
         this.createdAt = createdAt;
     }
 
-    public List<ToDoCollaborator> getCollaborators() {
-        return collaborators;
-    }
-
-    public void setCollaborators(List<ToDoCollaborator> collaborators) {
-        this.collaborators = collaborators;
-    }
 }
 
