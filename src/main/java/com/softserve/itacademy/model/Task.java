@@ -32,6 +32,7 @@ public class Task {
     @Size(min = 3, max = 200)
     private String name;
 
+    @Enumerated (EnumType.STRING)
     @NotBlank(message = "The priority cannot be empty")
     @Column(nullable = false)
     private Priority priority;

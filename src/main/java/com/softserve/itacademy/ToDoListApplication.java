@@ -12,32 +12,30 @@ import lombok.val;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 
 import javax.validation.*;
 import java.security.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @SpringBootApplication
 @AllArgsConstructor
+//@EnableJpaRepositories
 public class ToDoListApplication implements CommandLineRunner {
-
     UserRepository userRepository;
     RoleRepository roleRepository;
     ToDoRepository toDoRepository;
-
     public static void main(String[] args) {
         SpringApplication.run(ToDoListApplication.class, args);
     }
-
     @Override
     public void run(String... args) throws Exception {
         System.out.println("Running Spring Boot Application");
-
-
-
         Role role = roleRepository.getOne(2L);
         User validUser  = new User();
         validUser.setEmail("valid@cv.edu.ua");
@@ -45,20 +43,16 @@ public class ToDoListApplication implements CommandLineRunner {
         validUser.setLastName("Valid-Name");
         validUser.setPassword("qwQW12!@");
         validUser.setRole(role);
-
         validUser = userRepository.save(validUser);
-
         ToDo toDo = new ToDo();
         toDo.setTitle("Other");
-        toDo.setOwner(validUser);
+        List<User> listOfUsers = new ArrayList<>();
+        listOfUsers.add(validUser);
+        toDo.setOwners(listOfUsers);
         toDo = toDoRepository.save(toDo);
-
         LocalDate localDate = toDo.getCreatedAt().toLocalDate();
         LocalDate today = LocalDate.now();
         System.out.println(localDate.equals(today));
-
-
-
     }
 }
 
