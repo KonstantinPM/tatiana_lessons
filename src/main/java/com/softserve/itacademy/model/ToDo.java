@@ -19,7 +19,7 @@ public class ToDo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long todo_id;
+    private Long id;
 
     @NotBlank
     @Size(max = 255)
@@ -29,15 +29,11 @@ public class ToDo {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-//    @OneToMany
-//    @JoinColumn(name = "todo_id")
-//    private List<ToDoCollaborator> collaborators;
+    @ManyToMany
+    @JoinTable (name = "users_todos", joinColumns = {@JoinColumn(name = "todos_id")},
+                                inverseJoinColumns = {@JoinColumn(name="users_id")})
 
-    @ManyToMany (cascade = CascadeType.ALL)
-    @JoinTable (name = "user_todo", joinColumns = {@JoinColumn(name = "todo_id")},
-                                inverseJoinColumns = {@JoinColumn(name="user_id")})
-
-    private List<User> owners ;
+    private List<User> owners;
 
 
 }

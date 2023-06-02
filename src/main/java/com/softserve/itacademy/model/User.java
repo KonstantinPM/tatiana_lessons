@@ -14,7 +14,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long user_id;
+    private Long id;
 
     @NotBlank
     @Email
@@ -23,6 +23,7 @@ public class User {
 
     @NotBlank
     @Size(max = 255)
+    @Pattern(regexp = "^[A-Z][a-z]+-[A-Z][a-z]+")
     private String firstName;
 
     @NotBlank

@@ -25,7 +25,6 @@ import java.util.Set;
 
 @SpringBootApplication
 @AllArgsConstructor
-//@EnableJpaRepositories
 public class ToDoListApplication implements CommandLineRunner {
     UserRepository userRepository;
     RoleRepository roleRepository;
@@ -43,12 +42,15 @@ public class ToDoListApplication implements CommandLineRunner {
         validUser.setLastName("Valid-Name");
         validUser.setPassword("qwQW12!@");
         validUser.setRole(role);
-        validUser = userRepository.save(validUser);
+        List<ToDo> todos = new ArrayList<>();
         ToDo toDo = new ToDo();
+        toDo.setCreatedAt(LocalDateTime.now());
         toDo.setTitle("Other");
+        validUser.setToDoList(todos);
         List<User> listOfUsers = new ArrayList<>();
         listOfUsers.add(validUser);
         toDo.setOwners(listOfUsers);
+        validUser = userRepository.save(validUser);
         toDo = toDoRepository.save(toDo);
         LocalDate localDate = toDo.getCreatedAt().toLocalDate();
         LocalDate today = LocalDate.now();
