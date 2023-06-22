@@ -1,8 +1,6 @@
 package com.softserve.itacademy.todolist.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -11,7 +9,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Builder
 @Entity @Table(name = "todos")
 public class ToDo {
     @Id

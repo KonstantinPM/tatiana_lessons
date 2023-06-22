@@ -1,8 +1,6 @@
 package com.softserve.itacademy.todolist.model;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.Hibernate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,8 +12,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Getter @Setter @NoArgsConstructor
+@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "users")
 public class User implements UserDetails {
     @Id

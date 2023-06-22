@@ -1,4 +1,4 @@
-package com.softserve.itacademy.todolist.dto;
+package com.softserve.itacademy.todolist.dto.user;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
