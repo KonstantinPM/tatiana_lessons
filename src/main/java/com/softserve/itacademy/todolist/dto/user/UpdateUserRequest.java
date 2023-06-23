@@ -1,11 +1,11 @@
 package com.softserve.itacademy.todolist.dto.user;
 
 import com.softserve.itacademy.todolist.model.Role;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
-@Builder
+@Getter
+@Setter
+@NoArgsConstructor
 public class UpdateUserRequest {
 
     Long id;
