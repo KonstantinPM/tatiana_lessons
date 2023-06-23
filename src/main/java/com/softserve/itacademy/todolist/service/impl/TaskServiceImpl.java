@@ -34,11 +34,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public Task readById(long id) {
 
-        EntityNotFoundException exception = new EntityNotFoundException("Task with id " + id + " not found");
-        logger.error(exception.getMessage(), exception);
-
         return taskRepository.findById(id).orElseThrow(
-                () -> exception);
+                () -> new EntityNotFoundException("User with id " + id + " not found"));
     }
 
     @Override

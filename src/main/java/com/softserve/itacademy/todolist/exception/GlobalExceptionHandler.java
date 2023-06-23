@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
@@ -32,10 +33,42 @@ public class GlobalExceptionHandler { // consider extending ResponseEntityExcept
     }
 
     @ExceptionHandler
-    public ResponseEntity<?> handleEntityNotFoundException(EntityNotFoundException ex) {
-        // todo: add logging
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(ex.getMessage());
     }
 
-    // todo: add more handlers
+    @ExceptionHandler
+    public ResponseEntity<String> handleWrongPriorityNameException(WrongPriorityNameException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> handleEmptyNameException(EmptyNameException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> handleWrongStateId(WrongStateId ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+    @ExceptionHandler
+    public ResponseEntity<String> handleWrongToDoId(WrongToDoId ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
+
+
+
 }

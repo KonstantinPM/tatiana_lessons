@@ -19,15 +19,19 @@ public class TaskDto {
     @NotNull
     private long stateId;
 
+    @NotNull
+    private String stateName;
+
     public TaskDto() {
     }
 
-    public TaskDto(long id, String name, String priority, long todoId, long stateId) {
+    public TaskDto(long id, String name, String priority, long todoId, long stateId, String stateName) {
         this.id = id;
         this.name = name;
         this.priority = priority;
         this.todoId = todoId;
         this.stateId = stateId;
+        this.stateName = stateName;
     }
 
     public long getId() {
@@ -70,27 +74,43 @@ public class TaskDto {
         this.stateId = stateId;
     }
 
+    public String getStateName() {
+        return stateName;
+    }
+
+    public void setStateName(String stateName) {
+        this.stateName = stateName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         TaskDto taskDto = (TaskDto) o;
-        return id == taskDto.id && todoId == taskDto.todoId && stateId == taskDto.stateId && Objects.equals(name, taskDto.name) && Objects.equals(priority, taskDto.priority);
+
+        if (id != taskDto.id) return false;
+        if (todoId != taskDto.todoId) return false;
+        if (stateId != taskDto.stateId) return false;
+        if (!Objects.equals(name, taskDto.name)) return false;
+        if (!Objects.equals(priority, taskDto.priority)) return false;
+        return Objects.equals(stateName, taskDto.stateName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, priority, todoId, stateId);
+        return Objects.hash(id, name, priority, todoId, stateId, stateName);
     }
 
     @Override
     public String toString() {
-        return "TaskDto { " +
-                "id = " + id +
-                ", name = '" + name + '\'' +
-                ", priority = '" + priority + '\'' +
-                ", todoId = " + todoId +
-                ", stateId = " + stateId +
-                " }";
+        return "TaskDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", priority='" + priority + '\'' +
+                ", todoId=" + todoId +
+                ", stateId=" + stateId +
+                ", stateName='" + stateName + '\'' +
+                '}';
     }
 }

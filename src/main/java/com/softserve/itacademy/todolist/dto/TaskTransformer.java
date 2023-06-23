@@ -12,7 +12,8 @@ public class TaskTransformer {
                 task.getName(),
                 task.getPriority().toString(),
                 task.getTodo().getId(),
-                task.getState().getId()
+                task.getState().getId(),
+                task.getState().getName()
         );
     }
 
