@@ -69,6 +69,12 @@ public class GlobalExceptionHandler { // consider extending ResponseEntityExcept
                 .body(ex.getMessage());
     }
 
-
+    @ExceptionHandler
+    public ResponseEntity<String> handleValidatorException(ValidatorException ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(ex.getMessage());
+    }
 
 }

@@ -12,8 +12,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static com.softserve.itacademy.todolist.exception.ValidatorException.validate;
 
 @Slf4j
 @RestController
@@ -32,19 +35,19 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> getById(@PathVariable Long id) {
-        User user = userService.readById(id)
-                ;
+        User user = userService.readById(id);
         if (user != null) {
             UserResponse userResponse = new UserResponse(user);
             return ResponseEntity.ok(userResponse);
         } else {
-            return ResponseEntity.notFound().build();
+            throw new EntityNotFoundException("User not found.");
+            //return ResponseEntity.notFound().build();
         }
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest createUserRequest) {
-        log.info("Create user request: {}", createUserRequest);
+        validate(createUserRequest);
         User createdUser = userService.create(User.builder()
                 .firstName(createUserRequest.getFirstName())
                 .lastName(createUserRequest.getLastName())
@@ -57,6 +60,7 @@ public class UserController {
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<UserResponse> updateUser(@RequestBody UpdateUserRequest userRequest) {
+        validate(userRequest);
         User updatedUser = userService.update(User.builder()
                 .id(userRequest.getId())
                 .firstName(userRequest.getFirstName())
@@ -74,6 +78,11 @@ public class UserController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Long id) {
+        User user = userService.readById(id);
+
+        if (user == null) {
+            throw new EntityNotFoundException("User not found.");
+        }
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }
