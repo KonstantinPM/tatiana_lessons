@@ -2,6 +2,8 @@ package com.softserve.itacademy.todolist.controller;
 
 import com.softserve.itacademy.todolist.dto.user.CreateUserRequest;
 import com.softserve.itacademy.todolist.dto.user.UpdateUserRequest;
+import com.softserve.itacademy.todolist.dto.user.UserResponse;
+import com.softserve.itacademy.todolist.dto.validator.UserRequestValidator;
 import com.softserve.itacademy.todolist.model.Role;
 import com.softserve.itacademy.todolist.model.User;
 import com.softserve.itacademy.todolist.service.UserService;
@@ -43,6 +45,8 @@ public class UserControllerTests {
 
     @Mock
     private UserService userService;
+    @Mock
+    private UserRequestValidator userRequestValidator;
 
     @InjectMocks
     private UserController userController;
@@ -149,37 +153,39 @@ public class UserControllerTests {
         verifyNoMoreInteractions(userService);
     }
 
-//    @Test
-//    public void testUpdateUser() throws Exception {
-//        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
-//        updateUserRequest.setId(1L);
-//        updateUserRequest.setFirstName("John");
-//        updateUserRequest.setLastName("Doe");
-//        updateUserRequest.setEmail("johndoe@example.com");
-//        updateUserRequest.setPassword("newpassword");
-//        updateUserRequest.setRole(new Role());
-//
-//        User updatedUser = new User();
-//        updatedUser.setId(1L);
-//        updatedUser.setFirstName("John");
-//        updatedUser.setLastName("Doe");
-//        updatedUser.setEmail("johndoe@example.com");
-//        updatedUser.setPassword("newpassword");
-//        updatedUser.setRole(updatedUser.getRole());
-//
-//        given(userService.update(any(User.class))).willReturn(updatedUser);
-//
-//        mockMvc.perform(put("/api/users")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(asJsonString(updateUserRequest)))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+    @Test
+    public void testUpdateUser() throws Exception {
+        UpdateUserRequest updateUserRequest = new UpdateUserRequest();
+        updateUserRequest.setId(1L);
+        updateUserRequest.setFirstName("John");
+        updateUserRequest.setLastName("Doe");
+        updateUserRequest.setEmail("johndoe@example.com");
+        updateUserRequest.setPassword("newpassword");
+        updateUserRequest.setRole(new Role());
+
+        User updatedUser = new User();
+        updatedUser.setId(1L);
+        updatedUser.setFirstName("John");
+        updatedUser.setLastName("Doe");
+        updatedUser.setEmail("johndoe@example.com");
+        updatedUser.setPassword("newpassword");
+        updatedUser.setRole(updateUserRequest.getRole());
+
+        given(userService.update(any(User.class))).willReturn(updatedUser);
+
+        mockMvc.perform(put("/api/users")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(updateUserRequest)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().json(asJsonString(new UserResponse(updatedUser))));
 //                .andExpect(jsonPath("$.id").value(updatedUser.getId()))
-//                .andExpect(jsonPath("$.email").value(updatedUser.getEmail()));
-//
-//        verify(userService, times(1)).update(any(User.class));
-//        verifyNoMoreInteractions(userService);
-//    }
+//                .andExpect(jsonPath("$.email").value(updatedUser.getEmail()))
+//                .andExpect(jsonPath("$.first_name").value(updatedUser.getFirstName()));
+
+        verify(userService, times(1)).update(any(User.class));
+        verifyNoMoreInteractions(userService);
+    }
 
     @Test
     public void testDeleteUser() throws Exception {

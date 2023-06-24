@@ -14,6 +14,7 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -42,8 +43,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(long id) {
-        User user = readById(id);
-        userRepository.delete(user);
+        if (!userRepository.existsById(id)) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        userRepository.deleteById(id);
     }
 
     @Override

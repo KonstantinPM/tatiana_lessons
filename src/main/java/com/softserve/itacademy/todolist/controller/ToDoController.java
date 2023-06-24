@@ -17,25 +17,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/users/{user_id}/todos")
+@RequestMapping("/api/users/todos")
 public class ToDoController {
 
     @Autowired
     private ToDoService toDoService;
 
 
-@GetMapping
-public List<ToDoResponse> getAll() {
-    return toDoService.getAll().stream()
-            .map(ToDoResponse::new)
-            .collect(Collectors.toList());
-}
+    @GetMapping
+    public List<ToDoResponse> getAll() {
+        return toDoService.getAll().stream()
+                          .map(ToDoResponse::new)
+                          .collect(Collectors.toList());
+    }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ToDoResponse> getById(@PathVariable Long id) {
-        ToDo toDo = toDoService.readById(id);
-        if (toDo != null) {
-            ToDoResponse toDoResponse = new ToDoResponse(toDo);
+    @GetMapping("/{user_id}")
+    public ResponseEntity<ToDoResponse> getById(@PathVariable("user_id") Long userId) {
+        List<ToDo> toDoList = toDoService.getByUserId(userId);
+        if (toDoList != null) {
+            ToDoResponse toDoResponse = new ToDoResponse(toDoList.get(0));
             return ResponseEntity.ok(toDoResponse);
         } else {
             return ResponseEntity.notFound().build();
@@ -45,25 +45,25 @@ public List<ToDoResponse> getAll() {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ToDoResponse> createToDo(@RequestBody CreateToDoRequest createToDoRequest) {
         ToDo createdToDo = toDoService.create(ToDo.builder()
-                .title(createToDoRequest.getTitle())
-                .createdAt(LocalDateTime.now())
-                .owner(createToDoRequest.getOwner())
-                .tasks(new ArrayList<>())
-                .collaborators(createToDoRequest.getCollaborators())
-                .build());
+                                                  .title(createToDoRequest.getTitle())
+                                                  .createdAt(LocalDateTime.now())
+                                                  .owner(createToDoRequest.getOwner())
+                                                  .tasks(new ArrayList<>())
+                                                  .collaborators(createToDoRequest.getCollaborators())
+                                                  .build());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ToDoResponse(createdToDo));
     }
 
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ToDoResponse> updateToDo(@RequestBody UpdateToDoRequest updateToDoRequest) {
         ToDo updatedToDo = toDoService.update(ToDo.builder()
-                .id(updateToDoRequest.getId())
-                .title(updateToDoRequest.getTitle())
-                .createdAt(updateToDoRequest.getCreatedAt())
-                .owner(updateToDoRequest.getOwner())
-                .tasks(updateToDoRequest.getTasks())
-                .collaborators(updateToDoRequest.getCollaborators())
-                .build());
+                                                  .id(updateToDoRequest.getId())
+                                                  .title(updateToDoRequest.getTitle())
+                                                  .createdAt(updateToDoRequest.getCreatedAt())
+                                                  .owner(updateToDoRequest.getOwner())
+                                                  .tasks(updateToDoRequest.getTasks())
+                                                  .collaborators(updateToDoRequest.getCollaborators())
+                                                  .build());
         if (updatedToDo != null) {
             return ResponseEntity.ok(new ToDoResponse(updatedToDo));
         } else {
